@@ -1,0 +1,65 @@
+body, html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    background-color: #ffff;
+}
+
+.navbar {
+    background-color: #999ae6;
+}
+.navbar-brand img {
+    width: 50px;
+    height: auto;
+}
+
+.nav-link{
+    color: #000000;
+}
+
+.nav-link:hover {
+    color: grey;
+}
+
+.brand-name {
+    font-family: 'Montaga', serif;
+    font-size: 24px;
+}
+
+.signup-card {
+    background-color: #999ae63f;
+    border-radius: 8px;
+    padding-bottom: 20px;
+}
+
+.text-center{
+    font-family: 'Open Sans, serif';
+
+}
+.signup-card .btn-primary {
+    background-color: #bc3af441;
+    border: none;
+}
+.signup-card .btn-primary:hover {
+    background-color: #a58cd4;
+}
+
+.btn-primary{
+    color: #000000;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+.footer {
+    background-color: #999ae6;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

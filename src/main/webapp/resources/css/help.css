@@ -1,0 +1,63 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/*
+    Created on : 9 Dec 2024, 00.33.32
+    Author     : arifwinanda
+*/
+
+.navbar {
+    background-color: #999ae6;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: normal;
+    font-family: 'montaga', serif;
+    color: black;
+}
+
+.navbar-nav .nav-link {
+    color: black;
+    font-weight: normal;
+    margin-right: 15px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #d4c4ff;
+}
+
+.help-header h4, p {
+    text-align: center;
+}
+
+.help-header h4 {
+    margin-top: 20px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+section {
+    padding: 10px 0;
+}
+
+h6 {
+    font-size: 18px;
+    margin: 20px;
+}
+
+.call-center {
+    text-align: center;
+    margin: 20px;
+}
+
+.footer {
+    background-color: #9c6eff;
+    padding: 25px;
+    text-align: center;
+    color: white;
+}

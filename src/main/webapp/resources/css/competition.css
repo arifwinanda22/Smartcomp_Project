@@ -1,0 +1,227 @@
+/* Global Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Open Sans', serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #999AE6;
+    padding: 15px 0;
+}
+
+.logo {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.navbar-brand {
+    color: #000 !important;
+    font-weight: 600;
+}
+
+.navbar-brand span {
+    margin-left: 10px;
+}
+
+.btn-outline-success {
+    background-color: #1868b438;
+    color: #fff;
+    border: none;
+}
+
+.btn-outline-success:hover {
+    background-color: #5c306e9e;
+}
+
+.btn-custom {
+    background-color: transparent;
+    font-size: 1.5rem;
+}
+
+/* Search Bar */
+.input-group {
+    max-width: 500px;
+}
+
+.input-group-text {
+    background-color: white;
+    border-right: none;
+}
+
+/* Competition Cards */
+.card {
+    transition: transform 0.3s ease-in-out;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    background: white;
+    border-radius: 12px;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.card-text {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Competition Sections */
+.container {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.container h3 {
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #999AE6;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #7a85d1;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 20px;
+}
+
+/* Status Badges */
+.badge {
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+/* Price and Date Format */
+.card-body p {
+    margin-bottom: 8px;
+    color: #666;
+}
+
+/* Categories Button */
+.categories-btn-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.categories-btn-container .btn-primary {
+    background-color: #999AE6;
+    border: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .navbar .d-flex {
+        width: 100% !important;
+        margin: 10px 0;
+    }
+}
+
+/* Notifications Offcanvas */
+.offcanvas {
+    border-radius: 12px 0 0 12px;
+}
+
+.offcanvas-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.notification-card {
+    transition: all 0.3s ease;
+}
+
+.notification-card:hover {
+    transform: translateX(5px);
+    background-color: #f0f0f0;
+}
+
+/* Text Styles */
+.text-center.mt-5 p {
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Categories List */
+.list-group-item {
+    border: none;
+    padding: 0.5rem 1rem;
+}
+
+.list-group-item button {
+    width: 100%;
+    text-align: left;
+    padding: 8px;
+    color: #333;
+}
+
+.list-group-item button:hover {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Icons */
+.bi {
+    margin-right: 8px;
+}

@@ -1,0 +1,159 @@
+/* Global Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Open Sans', serif;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #999AE6;
+}
+
+.logo {
+    width: 40px;
+    height: auto;
+}
+
+.btn-outline-success {
+    background-color: #1868b438;
+    color: #fff;
+    border: none;
+}
+
+.btn-outline-success:hover {
+    background-color: #5c306e9e;
+}
+
+.btn-custom {
+    background-color: transparent;
+    font-size: 1.5rem;
+}
+
+/* Main Content */
+.main-content {
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.btn-primary {
+    margin-top: 20px;
+}
+
+/* Offcanvas Styles */
+.offcanvas-header, .offcanvas-body h6 {
+    color: #6c757d;
+    font-weight: bold;
+}
+
+.notification-card {
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    border: none;
+}
+
+/* Categories Button */
+.categories-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: -20px;
+}
+
+.categories-btn-container button {
+    background-color: #999AE6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.categories-btn-container button:hover {
+    background-color: #9b59b6;
+}
+
+/* Offcanvas List Items */
+.offcanvas-body .list-group-item button.btn-link {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.offcanvas-body .list-group-item button.btn-link:hover {
+    color: inherit;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Card Styles */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    max-width: 100%;
+    height: 100%;
+    min-height: 350px;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+
+.card-body {
+    padding: 10px;
+    text-align: center;
+}
+
+.card-text {
+    font-weight: normal;
+}
+
+.btn-secondary {
+    background-color: #0b0c634a;
+    color: #fff;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #7a85d1;
+}
+
+.btn-light {
+    background-color: #bc3af462;
+    color: #fff;
+    border: none;
+}
+
+.btn-light:hover {
+    background-color: #Bc3af4;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #999AE6;
+    color: #000;
+    border: none;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #999AE6;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Responsive Layout */
+@media (max-width: 767px) {
+    .card {
+        max-width: 100%;
+    }
+
+    .categories-btn-container {
+        margin-top: 10px;
+    }
+}

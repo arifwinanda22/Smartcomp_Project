@@ -1,0 +1,87 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/*
+    Created on : 9 Dec 2024, 00.45.48
+    Author     : arifwinanda
+*/
+
+.navbar {
+    background-color: #999ae6;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: normal;
+    font-family: 'montaga', serif;
+    color: black;
+}
+
+.navbar-nav .nav-link {
+    color: black;
+    font-weight: normal;
+    margin-right: 15px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #d4c4ff;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.welcome-section {
+    text-align: center;
+    max-width: auto;
+    padding: 20px;
+}
+
+.welcome-section h1 {
+    font-size: 36px;
+    color: black;
+}
+
+.welcome-section p {
+    font-size: 22px;
+    color: black;
+}
+
+.get-started-btn {
+    background-color: #d4c4ff;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: normal;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.get-started-btn:hover {
+    background-color: #9c6eff;
+    color: white;
+}
+
+.image-section img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    background-color: #9c6eff;
+    padding: 25px;
+    text-align: center;
+    color: white;
+}
