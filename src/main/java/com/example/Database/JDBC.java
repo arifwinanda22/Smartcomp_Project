@@ -5,14 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Kelas JDBC untuk mengelola koneksi ke database.
+
  */
 public class JDBC {
 
-    // Konstanta untuk konfigurasi database
-    private static final String URL = "jdbc:mysql://localhost:3306/smartcomp?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+
+    private static final String URL = "jdbc:postgresql://localhost:5433/postgres";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "12345678";
 
     /**
      * Mengembalikan koneksi ke database.
@@ -23,7 +23,7 @@ public class JDBC {
     public static Connection getConnection() throws SQLException {
         try {
             // Memuat driver JDBC
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Sesuaikan dengan versi MySQL Connector
+            Class.forName("org.postgresql.Driver"); 
         } catch (ClassNotFoundException e) {
             System.out.println("Driver JDBC tidak ditemukan: " + e.getMessage());
             throw new SQLException("Driver JDBC tidak ditemukan.", e);

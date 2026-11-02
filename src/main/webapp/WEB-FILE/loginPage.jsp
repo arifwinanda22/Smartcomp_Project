@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %><%@page import="com.example.classes.Login"%>
 <%@ page import="java.sql.*" %>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,13 +27,13 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
+                        <a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/index.jsp">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.jsp">About</a>
+                        <a class="nav-link" href="<%=request.getContextPath()%>/WEB-FILE/about.jsp">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="help.jsp">Help</a>
+                        <a class="nav-link" href="<%=request.getContextPath()%>/help.jsp">Help</a>
                     </li>
                 </ul>
             </div>
@@ -42,7 +45,7 @@
         <div class="row w-100">
             <div class="col-md-6">
                 <div class="login-card p-4 shadow">
-                    <h2 class="text-center mb-4">Login</h2>
+                    <h2 class="text-center mb-4">Login here</h2>
 
                     <% if (request.getAttribute("successMessage") != null) { %>
                         <div class="alert alert-success">
@@ -55,6 +58,18 @@
                             <%= request.getAttribute("errorMessage") %>
                         </div>
                     <% } %>
+
+                    <%
+    String status = request.getParameter("status");
+    if ("logged_out".equals(status)) {
+%>
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> Anda telah berhasil keluar dari sistem.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<%
+    }
+%>
 
                     <!-- Login Form -->
                     <form action="${pageContext.request.contextPath}/login" method="post">
@@ -81,7 +96,7 @@
     <!-- Footer -->
     <footer class="footer text-center text-white">
         <div class="container">
-            &copy; 2024 SmartComp. All rights reserved.
+            &copy; 2026 SmartComp. All rights reserved.
         </div>
     </footer>
 

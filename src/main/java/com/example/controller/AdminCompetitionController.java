@@ -1,6 +1,13 @@
 package com.example.controller;
 
-import com.example.Services.CompetitionService;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.Database.JDBC;
 import com.example.classes.Competition;
 
 import jakarta.servlet.ServletException;
@@ -9,17 +16,26 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @WebServlet("/adminCompetition")
 public class AdminCompetitionController extends HttpServlet {
-    private CompetitionService competitionService;
 
-    public void init() {
-        competitionService = new CompetitionService();
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<Competition> competitions = getAllCompetitions();
+
+        int totalComp = competitions.size();
+        int activeComp = 0;
+        for (Competition c : competitions) {
+            if ("active".equalsIgnoreCase(c.getStatus())) activeComp++;
+        }
+
+        request.setAttribute("competitions", competitions);
+        request.setAttribute("totalComp", totalComp);
+        request.setAttribute("activeComp", activeComp);
+        request.setAttribute("activeTab", "competition");
+
+        request.getRequestDispatcher("/WEB-FILE/dashboardAdmin.jsp").forward(request, response);
     }
 
     @Override
@@ -28,254 +44,88 @@ public class AdminCompetitionController extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-            switch (action) {
-                case "add":
-                    addCompetition(request, response);
-                    break;
-                case "update":
-                    updateCompetition(request, response);
-                    break;
-                case "delete":
-                    deleteCompetition(request, response);
-                    break;
-                default:
-                    response.sendRedirect(request.getContextPath() + "/adminCompetition");
-                    break;
+            if ("add".equalsIgnoreCase(action)) {
+                addCompetition(request);
+            } else if ("update".equalsIgnoreCase(action)) {
+                updateCompetition(request);
+            } else if ("delete".equalsIgnoreCase(action)) {
+                deleteCompetition(request);
             }
-        } catch (Exception e) {
-            request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("/WEB-FILE/dashboardAdmin.jsp").forward(request, response);
-        }
-    }
-
-    private void addCompetition(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Debug logging
-        System.out.println("\n=== Debug Add Competition ===");
-        System.out.println("name: " + request.getParameter("name"));
-        System.out.println("type: " + request.getParameter("type"));
-        System.out.println("start_date: " + request.getParameter("start_date"));
-        System.out.println("end_date: " + request.getParameter("end_date"));
-        System.out.println("entry_fee: " + request.getParameter("entry_fee"));
-        System.out.println("status: " + request.getParameter("status"));
-        System.out.println("=============================\n");
-
-        try {
-            // Get and validate parameters
-            String name = validateParameter(request, "name", "Competition name");
-            String type = validateParameter(request, "type", "Competition type");
-            String startDateStr = validateParameter(request, "start_date", "Start date");
-            String endDateStr = validateParameter(request, "end_date", "End date");
-            String entryFeeStr = validateParameter(request, "entry_fee", "Entry fee");
-            String status = validateParameter(request, "status", "Status");
-
-            // Parse dates
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setLenient(false);
-
-            Date start_date;
-            Date end_date;
-            try {
-                start_date = dateFormat.parse(startDateStr);
-                end_date = dateFormat.parse(endDateStr);
-            } catch (ParseException e) {
-                throw new ServletException("Invalid date format. Please use YYYY-MM-DD format");
-            }
-
-            // Validate dates
-            if (end_date.before(start_date)) {
-                throw new ServletException("End date must be after start date");
-            }
-
-            // Parse entry fee
-            double entry_fee;
-            try {
-                entry_fee = Double.parseDouble(entryFeeStr);
-                if (entry_fee < 0) {
-                    throw new ServletException("Entry fee cannot be negative");
-                }
-            } catch (NumberFormatException e) {
-                throw new ServletException("Invalid entry fee format");
-            }
-
-            Competition competition = new Competition(
-                    name,
-                    type,
-                    start_date,
-                    end_date,
-                    entry_fee,
-                    status
-            );
-
-            competitionService.addCompetition(competition);
-            request.setAttribute("successMessage", "Competition added successfully!");
-            response.sendRedirect(request.getContextPath() + "/adminCompetition?action=list");
-
+            response.sendRedirect(request.getContextPath() + "/adminCompetition");
         } catch (Exception e) {
             e.printStackTrace();
-            String errorMsg = "Error adding competition: " + e.getMessage();
-            if (e instanceof ParseException) {
-                errorMsg = "Invalid date format. Please use YYYY-MM-DD format";
-            } else if (e instanceof NumberFormatException) {
-                errorMsg = "Invalid number format for entry fee";
-            }
-
-            request.setAttribute("errorMessage", errorMsg);
-            request.getRequestDispatcher("/WEB-FILE/dashboardAdmin.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/adminCompetition?error=true");
         }
     }
 
-    private void updateCompetition(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            // Debug logging
-            System.out.println("\n=== Debug Update Competition ===");
-            System.out.println("id: " + request.getParameter("id"));
-            System.out.println("name: " + request.getParameter("name"));
-            System.out.println("type: " + request.getParameter("type"));
-            System.out.println("start_date: " + request.getParameter("start_date"));
-            System.out.println("end_date: " + request.getParameter("end_date"));
-            System.out.println("entry_fee: " + request.getParameter("entry_fee"));
-            System.out.println("status: " + request.getParameter("status"));
-            System.out.println("=============================\n");
+    private List<Competition> getAllCompetitions() {
+        List<Competition> list = new ArrayList<>();
+        String sql = "SELECT * FROM competitions ORDER BY id ASC";
 
-            // Get and validate parameters
-            int id = Integer.parseInt(validateParameter(request, "id", "Competition ID"));
-            String name = validateParameter(request, "name", "Competition name");
-            String type = validateParameter(request, "type", "Competition type");
-            String startDateStr = validateParameter(request, "start_date", "Start date");
-            String endDateStr = validateParameter(request, "end_date", "End date");
-            String entryFeeStr = validateParameter(request, "entry_fee", "Entry fee");
-            String status = validateParameter(request, "status", "Status");
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-            // Parse dates
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setLenient(false);
+            while (rs.next()) {
+                Competition c = new Competition();
+                c.setId(rs.getInt("id"));
+                c.setName(rs.getString("name"));
+                c.setType(rs.getString("type"));
+                c.setStartDate(rs.getDate("start_date"));
+                c.setEndDate(rs.getDate("end_date"));
+                c.setEntryFee(rs.getDouble("entry_fee"));
+                c.setStatus(rs.getString("status"));
 
-            Date start_date = dateFormat.parse(startDateStr);
-            Date end_date = dateFormat.parse(endDateStr);
+                try { c.setDescription(rs.getString("description")); } catch (Exception ignored) {}
+                try { c.setCriteria(rs.getString("criteria")); } catch (Exception ignored) {}
 
-            // Validate dates
-            if (end_date.before(start_date)) {
-                throw new ServletException("End date must be after start date");
+                list.add(c);
             }
-
-            // Parse entry fee
-            double entry_fee = Double.parseDouble(entryFeeStr);
-            if (entry_fee < 0) {
-                throw new ServletException("Entry fee cannot be negative");
-            }
-
-            Competition competition = new Competition(
-                    id,
-                    name,
-                    type,
-                    start_date,
-                    end_date,
-                    entry_fee,
-                    status
-            );
-
-            competitionService.updateCompetition(competition);
-            request.setAttribute("successMessage", "Competition updated successfully!");
-            response.sendRedirect(request.getContextPath() + "/adminCompetition?action=list");
-
         } catch (Exception e) {
             e.printStackTrace();
-            String errorMsg = "Error updating competition: " + e.getMessage();
-            if (e instanceof ParseException) {
-                errorMsg = "Invalid date format. Please use YYYY-MM-DD format";
-            } else if (e instanceof NumberFormatException) {
-                errorMsg = "Invalid number format for entry fee";
-            }
+        }
+        return list;
+    }
 
-            request.setAttribute("errorMessage", errorMsg);
-            request.getRequestDispatcher("/WEB-FILE/dashboardAdmin.jsp").forward(request, response);
+    private void addCompetition(HttpServletRequest request) throws Exception {
+        String sql = "INSERT INTO competitions (name, type, start_date, end_date, entry_fee, status, description, criteria) VALUES (?, ?, ?::date, ?::date, ?, ?, ?, ?)";
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, request.getParameter("name"));
+            ps.setString(2, request.getParameter("type"));
+            ps.setString(3, request.getParameter("startDate"));
+            ps.setString(4, request.getParameter("endDate"));
+            ps.setDouble(5, Double.parseDouble(request.getParameter("entryFee")));
+            ps.setString(6, request.getParameter("status"));
+            ps.setString(7, request.getParameter("description"));
+            ps.setString(8, request.getParameter("criteria"));
+            ps.executeUpdate();
         }
     }
 
-    private void deleteCompetition(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            competitionService.deleteCompetition(id);
-            request.setAttribute("successMessage", "Competition deleted successfully!");
-            response.sendRedirect(request.getContextPath() + "/adminCompetition?action=list");
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "Error deleting competition: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-FILE/dashboardAdmin.jsp").forward(request, response);
+    private void updateCompetition(HttpServletRequest request) throws Exception {
+        String sql = "UPDATE competitions SET name = ?, type = ?, start_date = ?::date, end_date = ?::date, entry_fee = ?, status = ?, description = ?, criteria = ? WHERE id = ?";
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, request.getParameter("name"));
+            ps.setString(2, request.getParameter("type"));
+            ps.setString(3, request.getParameter("startDate"));
+            ps.setString(4, request.getParameter("endDate"));
+            ps.setDouble(5, Double.parseDouble(request.getParameter("entryFee")));
+            ps.setString(6, request.getParameter("status"));
+            ps.setString(7, request.getParameter("description"));
+            ps.setString(8, request.getParameter("criteria"));
+            ps.setInt(9, Integer.parseInt(request.getParameter("id")));
+            ps.executeUpdate();
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if (action == null) {
-            action = "list";
+    private void deleteCompetition(HttpServletRequest request) throws Exception {
+        String sql = "DELETE FROM competitions WHERE id = ?";
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, Integer.parseInt(request.getParameter("id")));
+            ps.executeUpdate();
         }
-
-        try {
-            switch (action) {
-                case "list":
-                    listCompetitions(request, response);
-                    break;
-                case "edit":
-                    getCompetitionJson(request, response);
-                    break;
-                default:
-                    listCompetitions(request, response);
-                    break;
-            }
-        } catch (Exception e) {
-            request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("/WEB-FILE/dashboardAdmin.jsp").forward(request, response);
-        }
-    }
-
-    private void listCompetitions(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setAttribute("competitions", competitionService.getAllCompetitions());
-        request.getRequestDispatcher("/WEB-FILE/dashboardAdmin.jsp").forward(request, response);
-    }
-
-    private void getCompetitionJson(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            Competition competition = competitionService.getCompetitionById(id);
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            String json = String.format(
-                    "{\"id\":%d,\"name\":\"%s\",\"type\":\"%s\",\"start_date\":\"%s\",\"end_date\":\"%s\",\"entry_fee\":%.2f,\"status\":\"%s\"}",
-                    competition.getId(),
-                    competition.getName(),
-                    competition.getType(),
-                    dateFormat.format(competition.getStartDate()),
-                    dateFormat.format(competition.getEndDate()),
-                    competition.getEntryFee(),
-                    competition.getStatus()
-            );
-
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(json);
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
-        }
-    }
-
-    // Helper method to validate parameters
-    private String validateParameter(HttpServletRequest request, String paramName, String fieldName)
-            throws ServletException {
-        String value = request.getParameter(paramName);
-        if (value == null || value.trim().isEmpty()) {
-            throw new ServletException(fieldName + " is required");
-        }
-        return value.trim();
     }
 }

@@ -1,10 +1,4 @@
-<%--
-    Document   : help
-    Created on : 9 Dec 2024, 00.32.27
-    Author     : arifwinanda
---%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

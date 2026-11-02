@@ -1,6 +1,6 @@
 package com.example.classes;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Competition {
     private int id;
@@ -10,8 +10,12 @@ public class Competition {
     private Date endDate;
     private double entryFee;
     private String status;
+    private String description;
+    private String criteria;
 
-    // Constructor with id (for existing competitions)
+    public Competition() {}
+
+    // Konstruktor kompatibilitas lama
     public Competition(int id, String name, String type, Date startDate, Date endDate, double entryFee, String status) {
         this.id = id;
         this.name = name;
@@ -22,17 +26,19 @@ public class Competition {
         this.status = status;
     }
 
-    // Constructor without id (for new competitions)
-    public Competition(String name, String type, Date startDate, Date endDate, double entryFee, String status) {
+    // Konstruktor lengkap
+    public Competition(int id, String name, String type, Date startDate, Date endDate, double entryFee, String status, String description, String criteria) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
         this.entryFee = entryFee;
         this.status = status;
+        this.description = description;
+        this.criteria = criteria;
     }
 
-    // Getters and setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -53,4 +59,10 @@ public class Competition {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getCriteria() { return criteria; }
+    public void setCriteria(String criteria) { this.criteria = criteria; }
 }

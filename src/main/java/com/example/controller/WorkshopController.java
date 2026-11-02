@@ -1,23 +1,29 @@
 package com.example.controller;
 
-import com.example.classes.Workshop;
-import com.example.Services.UserService;
-
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.example.classes.Workshop;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 
 @WebServlet("/workshop")
-public class WorkshopController {
+public class WorkshopController extends HttpServlet {
     private List<Workshop> workshops = new ArrayList<>();
+
+    // Handle navigasi jika route /workshop diakses via browser
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        // Arahkan ke halaman katalog workshop user
+        response.sendRedirect(request.getContextPath() + "/WEB-FILE/WorkshopAcademic.jsp");
+    }
 
     // Add a new workshop
     public void addWorkshop(Workshop workshop) {
@@ -34,7 +40,8 @@ public class WorkshopController {
         for (Workshop workshop : workshops) {
             if (workshop.getId() == id) {
                 workshop.setName(name);
-                workshop.setDate(date);
+                // Konversi java.util.Date ke java.sql.Date secara aman
+                workshop.setDate(date != null ? new java.sql.Date(date.getTime()) : null);
                 workshop.setPrice(price);
                 workshop.setCapacity(capacity);
                 workshop.setStatus(status);

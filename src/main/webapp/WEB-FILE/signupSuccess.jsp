@@ -1,10 +1,3 @@
-<%--
-    Document   : signupSuccess
-    Created on : 9 Dec 2024, 08.16.49
-    Author     : arifwinanda
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -132,6 +132,8 @@
                resourceName="UserDatabase"/>
       </Realm>
 
+      <Context path="/smartcomp" docBase="/Users/arifwinanda/Documents/Berkas Arif/TUBES_PBO/src/main/webapp" reloadable="true" />
+
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
 

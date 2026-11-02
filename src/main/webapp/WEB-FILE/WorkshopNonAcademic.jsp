@@ -1,253 +1,308 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartComp - Homepage</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="WorkshopNonAcademic.css">
+    <title>SmartComp - Workshop Non-Academic</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montaga&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Menggunakan CSS yang sama dengan Workshop Academic -->
+    <link rel="stylesheet" href="WorkshopAcademic.css">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="https://i.pinimg.com/564x/d9/b6/c1/d9b6c103d2b23d92820972245191951f.jpg" alt="SmartComp Logo" class="logo">
-                <span>SmartComp</span>
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="<%=request.getContextPath()%>/index.jsp">
+                <img src="<%=request.getContextPath()%>/resources/images/gambar-removebg-preview.png" alt="SmartComp Logo" class="brand-logo" onerror="this.src='https://placehold.co/40x40?text=SC'">
+                <span class="brand-name">SmartComp</span>
             </a>
 
-            <form class="d-flex w-50">
+            <!-- Search Bar -->
+            <form class="d-flex nav-search mx-auto" role="search" action="<%=request.getContextPath()%>/workshop" method="get">
                 <div class="input-group">
-                    <span class="input-group-text" id="search-icon">
-                        <i class="bi bi-search"></i>
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-muted"></i>
                     </span>
-                    <input class="form-control" type="search" placeholder="Search for competition or workshop" aria-label="Search">
+                    <input class="form-control border-start-0 ps-0" type="search" name="keyword" placeholder="Search for competition or workshop" aria-label="Search">
+                    <button class="btn btn-search" type="submit">Search</button>
                 </div>
-                <button class="btn btn-outline-success ms-2" type="submit">Search</button>
             </form>
 
-            <div class="d-flex align-items-center">
-                <button class="btn btn-custom me-2"><i class="bi bi-cart"></i></button>
-                <button class="btn btn-custom me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNotifications">
+            <!-- Action Icons -->
+            <div class="d-flex align-items-center gap-2 nav-actions">
+                <a href="<%=request.getContextPath()%>/payment" class="nav-icon-btn" title="Cart & Payments">
+                    <i class="bi bi-cart2"></i>
+                </a>
+                <button class="nav-icon-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNotifications" aria-label="Notifications" title="Notifications">
                     <i class="bi bi-bell"></i>
                 </button>
 
-                <div class="btn-group">
-                    <button type="button" class="btn btn-custom"><i class="bi bi-person"></i></button>
-                    <button type="button" class="btn btn-custom dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="visually-hidden">Toggle Dropdown</span>
+                <div class="dropdown">
+                    <button class="nav-icon-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Account">
+                        <i class="bi bi-person-circle"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">My Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Update Profile</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/WEB-FILE/Profile.jsp"><i class="bi bi-person me-2"></i>My Profile</a></li>
+                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/WEB-FILE/UpdateProfile.jsp"><i class="bi bi-pencil-square me-2"></i>Update Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="<%=request.getContextPath()%>/logout"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
 
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNotifications" aria-labelledby="offcanvasNotificationsLabel">
-    <div class="offcanvas-header">
-        <h5 id="offcanvasNotificationsLabel">Notifikasi</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <!-- Section Notifikasi -->
-        <h6>Notifikasi</h6>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Dibuka pendaftaran lomba UI/UX</h6>
-            <small class="text-muted">2 menit yang lalu</small>
+    <!-- ===== Notifications Offcanvas ===== -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNotifications" aria-labelledby="offcanvasNotificationsLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold" id="offcanvasNotificationsLabel">Notifikasi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Dibuka pendaftaran lomba UI/UX</h6>
-            <small class="text-muted">2 menit yang lalu</small>
-        </div>
-
-        <!-- Section Pengingat Jadwal -->
-        <h6 class="mt-4">Pengingat Jadwal</h6>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Mentoring</h6>
-            <small class="text-muted">29 Oktober 2077, 10:00 AM</small>
-        </div>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Mentoring</h6>
-            <small class="text-muted">29 Oktober 2077, 10:00 AM</small>
-        </div>
-
-        <!-- Section Artikel Terkait -->
-        <h6 class="mt-4">Artikel Terkait</h6>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Mengenal Jenis-jenis Lomba dan Kriterianya</h6>
-            <small class="text-muted">Panduan untuk memilih lomba yang tepat</small>
-        </div>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Mengenal Jenis-jenis Lomba dan Kriterianya</h6>
-            <small class="text-muted">Panduan untuk memilih lomba yang tepat</small>
-        </div>
-
-        <!-- Section Tips -->
-        <h6 class="mt-4">Tips</h6>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Tips Produktivitas</h6>
-            <small class="text-muted">5 cara meningkatkan fokus kerja</small>
-        </div>
-        <div class="card mb-3 p-2 shadow-sm notification-card">
-            <h6>Tips Produktivitas</h6>
-            <small class="text-muted">5 cara meningkatkan fokus kerja</small>
-        </div>
-    </div>
-</div>
-
-<div class="categories-btn-container">
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Categories</button>
-</div>
-
-
-<!--div class="carousel-container">
-    <div id="carouselExample" class="carousel slide">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://i.pinimg.com/564x/a4/b2/db/a4b2db41bc119f3b0d78721cdab179fd.jpg" class="d-block w-100" alt="carouselIcon">
+        <div class="offcanvas-body">
+            <h6 class="text-uppercase text-muted small fw-bold mb-3">Terbaru</h6>
+            <div class="card p-3 mb-2 notification-card">
+                <span class="fw-semibold">Dibuka pendaftaran Public Speaking Mastery</span>
+                <small class="text-muted mt-1"><i class="bi bi-clock me-1"></i>5 menit yang lalu</small>
             </div>
-            <div class="carousel-item">
-                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
+            <div class="card p-3 mb-3 notification-card">
+                <span class="fw-semibold">Workshop Photography &amp; Creative Content</span>
+                <small class="text-muted mt-1"><i class="bi bi-calendar-event me-1"></i>Sabtu, 14:00 WIB</small>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
-</div-->
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Categories</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <button class="btn btn-link w-100 text-start">
-                    <i class="bi bi-house-door"></i> Home
-                </button>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-link w-100 text-start">
-                    <i class="bi bi-gear"></i> Workshop
-                </button>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-link w-100 text-start">
-                    <i class="bi bi-calendar"></i> Calendar
-                </button>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-link w-100 text-start">
-                    <i class="bi bi-trophy"></i> Competitions
-                </button>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-link w-100 text-start">
-                    <i class="bi bi-chat-dots"></i> Forum
-                </button>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-link w-100 text-start">
-                    <i class="bi bi-mortarboard"></i> Academic
-                </button>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-link w-100 text-start">
-                    <i class="bi bi-book"></i> Non-Academic
-                </button>
-            </li>
-        </ul>
-    </div>
-</div>
-
-
-
-        <div class="text-center mt-5">
-            <p>Recommended Workshop and Competition from us <br> All the skills you need in one place</p>
-            <button class="btn btn-secondary">Academic</button>
-            <button class="btn btn-light">Non-Academic</button>
+    <!-- ===== Categories Offcanvas ===== -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCategories" aria-labelledby="offcanvasCategoriesLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold" id="offcanvasCategoriesLabel">Categories</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <div class="offcanvas-body p-0">
+            <ul class="list-group list-group-flush category-list">
+                <li class="list-group-item">
+                    <a href="<%=request.getContextPath()%>/index.jsp" class="category-link"><i class="bi bi-house-door me-3"></i> Home</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="<%=request.getContextPath()%>/workshop" class="category-link"><i class="bi bi-gear me-3"></i> Workshop</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="<%=request.getContextPath()%>/competition" class="category-link"><i class="bi bi-trophy me-3"></i> Competitions</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="WorkshopAcademic.jsp" class="category-link"><i class="bi bi-mortarboard me-3"></i> Academic</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="WorkshopNonAcademic.jsp" class="category-link active"><i class="bi bi-book me-3"></i> Non-Academic</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-        <div class="container mt-5" style="min-height: 100vh;">
-            <!-- Row for 3 cards -->
-            <div class="row justify-content-center">
-                <!-- Card 1 -->
-                <div class="col-md-4">
-                    <div class="card" style="max-width: 18rem; max-height: 300px; overflow-y: auto;">
-                        <img src="https://i.pinimg.com/564x/cc/27/2e/cc272e5581bbd170b5cf1b62f92ab5df.jpg" class="card-img-top" alt="pubgMobile">
-                        <div class="card-body p-3 text-center">
-                            <h5 class="card-title">PUBG Tutorial For 30 days</h5>
-                            <a href="#" class="btn btn-primary mt-5">Jelajahi</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 2 -->
-                <div class="col-md-4">
-                    <div class="card" style="max-width: 18rem; max-height: 300px; overflow-y: auto;">
-                        <img src="https://i.pinimg.com/564x/31/89/19/31891953c5805b3b27693e3aa3350811.jpg" class="card-img-top" alt="running">
-                        <div class="card-body p-3 text-center">
-                            <h5 class="card-title">Ultimate Guide For Running from Beginners to Experts</h5>
-                            <a href="#" class="btn btn-primary mt-4">Jelajahi</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 3 -->
-                <div class="col-md-4">
-                    <div class="card" style="max-width: 18rem; max-height: 300px; overflow-y: auto;">
-                        <img src="https://i.pinimg.com/564x/51/9f/c6/519fc6cef4035bd7d4fd3cae6afdb2ce.jpg" class="card-img-top" alt="boxing">
-                        <div class="card-body p-3 text-center">
-                            <h5 class="card-title text-center">Learn Boxing For 30 days</h5>
-                            <a href="#" class="btn btn-primary mt-4">Jelajahi</a>
-                        </div>
-                    </div>
+    <!-- ===== Main Content ===== -->
+    <main class="flex-grow-1 py-5">
+        <div class="container">
+            
+            <!-- Hero / Header Section Terpusat -->
+            <div class="header-section text-center mb-5">
+                <button type="button" class="btn btn-category-trigger mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCategories">
+                    <i class="bi bi-grid-fill me-2"></i> Categories
+                </button>
+                <h2 class="section-heading fw-bold">Recommended Workshop &amp; Competition</h2>
+                <p class="section-subheading text-muted">Develop soft skills, creative arts, and non-academic leadership</p>
+
+                <!-- Filter Toggle Tabs (Non-Academic Aktif) -->
+                <div class="filter-toggle mt-4">
+                    <a href="WorkshopAcademic.jsp" class="btn filter-pill">Academic</a>
+                    <a href="WorkshopNonAcademic.jsp" class="btn filter-pill active">Non-Academic</a>
                 </div>
             </div>
 
-            <!-- Row for 2 cards -->
-            <div class="row justify-content-center mt-4">
-                <!-- Card 4 -->
-                <div class="col-md-4">
-                    <div class="card" style="max-width: 18rem; max-height: 300px; overflow-y: auto;">
-                        <img src="https://i.pinimg.com/736x/89/3e/81/893e814078618d295f4daaa2cc831a52.jpg" class="card-img-top" alt="guitar">
-                        <div class="card-body p-3 text-center">
-                            <h5 class="card-title">Complete Guitar Lesson Systems</h5>
-                            <a href="#" class="btn btn-primary mt-5">Jelajahi</a>
+            <!-- Card Grid Non-Academic -->
+            <div class="row g-4 justify-content-center">
+
+                <!-- Kartu 1: Public Speaking -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card workshop-card h-100">
+                        <div class="card-img-holder">
+                            <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Public Speaking">
+                            <span class="badge-category">Soft Skill</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Public Speaking &amp; Effective Pitching</h5>
+                            <p class="card-text text-muted small flex-grow-1">Kuasai teknik berbicara di depan audiens, gestur tubuh profesional, dan cara pitching ide inovatif.</p>
+                            <form action="${pageContext.request.contextPath}/payment" method="post" class="mt-auto">
+                                <input type="hidden" name="action" value="addPayment">
+                                <input type="hidden" name="eventType" value="Non-Academic">
+                                <input type="hidden" name="eventName" value="Public Speaking & Effective Pitching">
+                                <div class="card-footer-action d-flex align-items-center justify-content-between pt-3 border-top">
+                                    <span class="price-tag">Rp 75.000</span>
+                                    <button type="submit" class="btn btn-action">Jelajahi</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <!-- Card 5 -->
-                <div class="col-md-4">
-                    <div class="card" style="max-width: 18rem; max-height: 300px; overflow-y: auto;">
-                        <img src="https://i.pinimg.com/564x/c2/44/20/c244205784bd56cea117916b1b0014df.jpg" class="card-img-top" alt="photographer">
-                        <div class="card-body p-3 text-center">
-                            <h5 class="card-title">Photography-Become a Great Photographer</h5>
-                            <a href="#" class="btn btn-primary mt-4">Jelajahi</a>
+
+                <!-- Kartu 2: Visual Storytelling & Photography -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card workshop-card h-100">
+                        <div class="card-img-holder">
+                            <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Photography">
+                            <span class="badge-category">Creative Art</span>
                         </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Photography &amp; Creative Content Creation</h5>
+                            <p class="card-text text-muted small flex-grow-1">Pelajari komposisi framing visual, teknik pencahayaan kamera, dan kurasi estetika konten media sosial.</p>
+                            <div class="card-footer-action d-flex align-items-center justify-content-between pt-3 border-top">
+                                <span class="price-tag">Rp 90.000</span>
+                                <a href="#" class="btn btn-action">Jelajahi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kartu 3: Leadership & Team Management -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card workshop-card h-100">
+                        <div class="card-img-holder">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Leadership">
+                            <span class="badge-category">Leadership</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Student Leadership &amp; Team Dynamics</h5>
+                            <p class="card-text text-muted small flex-grow-1">Strategi mengelola tim organisasi mahasiswa, resolusi konflik, dan eksekusi program kerja efektif.</p>
+                            <div class="card-footer-action d-flex align-items-center justify-content-between pt-3 border-top">
+                                <span class="price-tag">Gratis</span>
+                                <a href="#" class="btn btn-action">Jelajahi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kartu 4: Personal Branding -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card workshop-card h-100">
+                        <div class="card-img-holder">
+                            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Personal Branding">
+                            <span class="badge-category">Career Prep</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Personal Branding on LinkedIn &amp; Career Prep</h5>
+                            <p class="card-text text-muted small flex-grow-1">Bangun reputasi profesional sejak bangku kuliah dan optimasi profil LinkedIn untuk peluang karier.</p>
+                            <div class="card-footer-action d-flex align-items-center justify-content-between pt-3 border-top">
+                                <span class="price-tag">Rp 50.000</span>
+                                <a href="#" class="btn btn-action">Jelajahi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kartu 5: Music & Audio Production -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card workshop-card h-100">
+                        <div class="card-img-holder">
+                            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Music Production">
+                            <span class="badge-category">Workshop</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Audio Editing &amp; Podcasting Fundamentals</h5>
+                            <p class="card-text text-muted small flex-grow-1">Pengenalan rekaman audio bersih, editing mixing suara, dan penerbitan podcast di platform digital.</p>
+                            <div class="card-footer-action d-flex align-items-center justify-content-between pt-3 border-top">
+                                <span class="price-tag">Rp 65.000</span>
+                                <a href="#" class="btn btn-action">Jelajahi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== Footer Multi-Kolom ===== -->
+    <footer class="main-footer mt-auto">
+        <div class="footer-top py-5">
+            <div class="container">
+                <div class="row g-4">
+                    <!-- Brand & Deskripsi -->
+                    <div class="col-12 col-lg-4 pe-lg-5">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <img src="<%=request.getContextPath()%>/resources/images/gambar-removebg-preview.png" alt="Logo" width="36" height="36" onerror="this.src='https://placehold.co/36x36?text=SC'">
+                            <span class="footer-brand-title">SmartComp.</span>
+                        </div>
+                        <p class="footer-desc-text">
+                            Platform workshop dan kompetisi teknologi terdepan untuk mahasiswa Indonesia. Wadah berbagi inovasi, asah keahlian, dan bangun portofolio nyata.
+                        </p>
+                    </div>
+
+                    <!-- Company -->
+                    <div class="col-6 col-sm-3 col-lg-2">
+                        <h6 class="footer-heading">Company</h6>
+                        <ul class="list-unstyled footer-menu">
+                            <li><a href="<%=request.getContextPath()%>/index.jsp">Home</a></li>
+                            <li><a href="<%=request.getContextPath()%>/about.jsp">About Us</a></li>
+                            <li><a href="<%=request.getContextPath()%>/competition">Competition</a></li>
+                            <li><a href="<%=request.getContextPath()%>/workshop">Workshop</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="col-6 col-sm-3 col-lg-2">
+                        <h6 class="footer-heading">Services</h6>
+                        <ul class="list-unstyled footer-menu">
+                            <li><a href="<%=request.getContextPath()%>/WEB-FILE/Profile.jsp">My Account</a></li>
+                            <li><a href="<%=request.getContextPath()%>/payment">Transactions</a></li>
+                            <li><a href="<%=request.getContextPath()%>/help.jsp">FAQ &amp; Help</a></li>
+                            <li><a href="<%=request.getContextPath()%>/help.jsp">Terms of Use</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="col-6 col-sm-3 col-lg-2">
+                        <h6 class="footer-heading">Social Media</h6>
+                        <ul class="list-unstyled footer-menu">
+                            <li><a href="https://instagram.com" target="_blank" rel="noopener"><i class="bi bi-instagram me-1"></i> Instagram</a></li>
+                            <li><a href="https://linkedin.com" target="_blank" rel="noopener"><i class="bi bi-linkedin me-1"></i> LinkedIn</a></li>
+                            <li><a href="https://youtube.com" target="_blank" rel="noopener"><i class="bi bi-youtube me-1"></i> YouTube</a></li>
+                            <li><a href="https://github.com" target="_blank" rel="noopener"><i class="bi bi-github me-1"></i> GitHub</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Kontak & Alamat -->
+                    <div class="col-6 col-sm-3 col-lg-2">
+                        <h6 class="footer-heading">Contact Info</h6>
+                        <ul class="list-unstyled footer-contact-info">
+                            <li>+62 812-3456-7890</li>
+                            <li>support@smartcomp.id</li>
+                            <li class="mt-2 text-muted-address">
+                                Jl. Telekomunikasi No. 1, Terusan Buahbatu, Bandung, 40257
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-
-            <!-- Footer -->
-            <footer class="mt-5 bg-custom text-black text-center p-3">
-                <p>&copy; 2024 SmartComp. All rights reserved.</p>
-            </footer>
         </div>
 
+        <!-- Sub-footer Bar -->
+        <div class="footer-bottom py-3">
+            <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+                <span class="copyright-text">Copyright &copy; 2026 SmartComp. All Rights Reserved.</span>
+                <div class="sub-links">
+                    <span class="me-3">Indonesia | IDR</span>
+                    <a href="<%=request.getContextPath()%>/help.jsp">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"  crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
 </html>
